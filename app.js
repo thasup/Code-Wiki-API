@@ -33,3 +33,45 @@ const articleSchema = new mongoose.Schema({
     content: String
 });
 const Article = mongoose.model("Article", articleSchema);
+
+// Request Targetting all Articles
+
+app.route("/articles")
+    // GET route
+    .get((req, res) => {
+        Article.find({}, (err, foundArticle) => {
+            if (!err) {
+                res.send(foundArticle);
+            } else {
+                res.send(err);
+            }
+        });
+    })
+    // POST route
+    .post((req, res) => {
+        console.log(req.body.title);
+        console.log(req.body.content);
+
+        const newArticle = new Article ({
+            title: req.body.title,
+            content: req.body.content,
+        });
+
+        newArticle.save((err) => {
+            if (!err) {
+                res.send("Successfully added a new article");
+            } else {
+                res.send(err);
+            }
+        });
+    })
+    // DELETE route
+    .delete((req, res) => {
+        Article.deleteMany({}, (err) => {
+            if (!err) {
+                res.send("Successfullt delete all articles!");
+            } else {
+                res.send(err);
+            }
+        });
+    })
