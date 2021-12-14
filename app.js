@@ -24,7 +24,7 @@ app.listen(port, () => {
 const password = process.env.MONGODB_PASS;
 main().catch(err => console.log(err));
 async function main() {
-    await mongoose.connect(`mongodb://localhost:27017/wikiDB`);
+    await mongoose.connect(`mongodb+srv://admin-first:${password}@cluster0.hi5zx.mongodb.net/wikiDB`);
 };
 
 // Create collection scheme and module
@@ -33,43 +33,3 @@ const articleSchema = new mongoose.Schema({
     content: String
 });
 const Article = mongoose.model("Article", articleSchema);
-
-app.route("/articles")
-    // GET route
-    .get("/articles", (req, res) => {
-        Article.find({}, (err, foundArticle) => {
-            if (!err) {
-                res.send(foundArticle);
-            } else {
-                res.send(err);
-            }
-        });
-    })
-    // POST route
-    .post("/articles", (req, res) => {
-        console.log(req.body.title);
-        console.log(req.body.content);
-
-        const newArticle = new Article ({
-            title: req.body.title,
-            content: req.body.content,
-        });
-
-        newArticle.save((err) => {
-            if (!err) {
-                res.send("Successfully added a new article");
-            } else {
-                res.send(err);
-            }
-        });
-    })
-    // DELETE route
-    .delete("/articles", (req, res) => {
-        Article.deleteMany({}, (err) => {
-            if (!err) {
-                res.send("Successfullt delete all articles!");
-            } else {
-                res.send(err);
-            }
-        });
-    })
