@@ -24,7 +24,7 @@ app.listen(port, () => {
 const password = process.env.MONGODB_PASS;
 main().catch(err => console.log(err));
 async function main() {
-    await mongoose.connect(`mongodb://localhost:27017/wikiDB`);
+    await mongoose.connect(`mongodb+srv://admin-first:${password}@cluster0.hi5zx.mongodb.net/wikiDB`);
 };
 
 // Create collection scheme and module
